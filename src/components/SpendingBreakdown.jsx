@@ -30,10 +30,18 @@ export default function SpendingBreakdown() {
         </div>
       ) : (
         <>
-          <div className="flex justify-center mb-4 h-32">
+          <div className="flex justify-center mb-4 h-48">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={categoryData} innerRadius={40} outerRadius={60} paddingAngle={5} dataKey="value">
+                <Pie 
+                  data={categoryData} 
+                  innerRadius="60%" 
+                  outerRadius="100%" 
+                  paddingAngle={5} 
+                  dataKey="value"
+                  cx="50%"
+                  cy="50%"
+                >
                   {categoryData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}

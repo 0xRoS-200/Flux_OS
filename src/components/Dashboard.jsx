@@ -24,12 +24,12 @@ export default function Dashboard() {
 
         <Sidebar />
 
-        <div className="flex-1 overflow-y-auto p-4 md:p-8">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-8">
 
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-stone-900 dark:text-stone-100 italic tracking-tight">Dashboard Overview</h1>
-              <p className="text-sm text-stone-500 dark:text-stone-400 mt-1 font-medium italic">Welcome back, your financial summary is ready.</p>
+              <h1 className="text-xl sm:text-2xl font-bold text-stone-900 dark:text-stone-100 italic tracking-tight">Dashboard Overview</h1>
+              <p className="text-[11px] sm:text-sm text-stone-500 dark:text-stone-400 mt-1 font-medium italic text-balance">Welcome back, your financial summary is ready.</p>
             </div>
 
             <div className="flex items-center gap-3 w-full sm:w-auto">
