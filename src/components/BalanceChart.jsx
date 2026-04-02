@@ -58,14 +58,14 @@ export default function BalanceChart() {
 
   return (
     <div className="xl:col-span-2 bg-white dark:bg-zinc-900 rounded-xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm transition-colors flex flex-col">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <h3 className="font-bold text-zinc-900 dark:text-white">Balance Statistics</h3>
-        <div className="flex gap-2 bg-zinc-50 dark:bg-zinc-800 p-1 rounded-lg border border-zinc-200 dark:border-zinc-700">
+        <div className="flex flex-wrap gap-1 sm:gap-2 w-full sm:w-auto bg-zinc-50 dark:bg-zinc-800 p-1 rounded-lg border border-zinc-200 dark:border-zinc-700">
           {['1D', '7D', '1M', '3M', 'ALL'].map((range) => (
             <button
               key={range}
               onClick={() => setTimeRange(range)}
-              className={`px-3 py-1 text-xs font-semibold rounded-md ${timeRange === range ? 'bg-white dark:bg-zinc-700 shadow-sm text-zinc-900 dark:text-white' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200'}`}
+              className={`px-3 py-1 text-xs font-semibold rounded-md flex-1 sm:flex-none text-center transition-colors ${timeRange === range ? 'bg-white dark:bg-zinc-700 shadow-sm text-zinc-900 dark:text-white' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200'}`}
             >
               {range}
             </button>
@@ -73,7 +73,7 @@ export default function BalanceChart() {
         </div>
       </div>
 
-      <div className="h-72 w-full flex-1">
+      <div className="w-full h-72 min-h-[288px]">
         {displayData.length === 0 ? (
           <div className="w-full h-full flex items-center justify-center text-sm text-gray-400 dark:text-gray-500 italic">
             No balance history available for this period.
