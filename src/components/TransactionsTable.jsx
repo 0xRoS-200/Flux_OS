@@ -28,92 +28,97 @@ export default function TransactionsTable() {
   };
 
   return (
-    <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden mb-8 transition-colors">
-      <div className="p-6 border-b border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h3 className="font-bold text-zinc-900 dark:text-white">Recent Transactions</h3>
+    <div className="bg-white/40 dark:bg-stone-900/60 backdrop-blur-2xl rounded-[2.5rem] border border-white/60 dark:border-stone-800/10 shadow-[0_20px_50px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] overflow-hidden mb-8 transition-all">
+      <div className="p-8 border-b border-stone-100 dark:border-stone-800/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+        <div className="flex flex-col gap-1">
+          <h3 className="font-bold text-stone-900 dark:text-stone-100 tracking-tight">Recent Intelligence</h3>
+          <p className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-widest">Transaction Ledger Layer</p>
+        </div>
 
-        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-          <div className="relative flex-1 sm:w-48">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+        <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
+          <div className="relative flex-1 sm:w-56 group">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400 group-focus-within:text-orange-500 transition-colors" />
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Search Ledger..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-stone-50 dark:bg-stone-800 dark:text-white border border-stone-200 dark:border-stone-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20"
+              className="w-full pl-11 pr-4 py-3 bg-stone-50/40 dark:bg-stone-800/40 dark:text-stone-100 border border-stone-200/60 dark:border-stone-700/50 rounded-xl text-sm focus:outline-none focus:border-orange-400 transition-all shadow-sm placeholder-stone-400 dark:placeholder-stone-600"
             />
           </div>
 
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
-            className="p-2 bg-gray-50 dark:bg-slate-700 dark:text-white border border-gray-200 dark:border-slate-600 rounded-lg text-sm outline-none"
+            className="p-3 bg-stone-50/40 dark:bg-stone-800/40 dark:text-stone-100 border border-stone-200/60 dark:border-stone-700/50 rounded-xl text-sm outline-none cursor-pointer focus:border-orange-400 transition-all font-medium"
           >
-            <option value="all">All Types</option>
-            <option value="income">Income</option>
-            <option value="expense">Expense</option>
+            <option value="all">Everywhere</option>
+            <option value="income">Credits</option>
+            <option value="expense">Debits</option>
           </select>
 
-          <label title="Restore from CSV" className="p-2 border border-gray-200 dark:border-slate-600 rounded-lg text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors cursor-pointer">
-            <Upload className="h-4 w-4" />
-            <input type="file" accept=".csv" className="hidden" onChange={(e) => {
-              const file = e.target.files[0];
-              if (!file) return;
-              const reader = new FileReader();
-              reader.onload = (evt) => {
-                importTransactions(evt.target.result);
-                alert("Backup restored successfully!");
-              };
-              reader.readAsText(file);
-            }} />
-          </label>
-          <button onClick={exportToCSV} title="Export CSV" className="p-2 border border-gray-200 dark:border-slate-600 rounded-lg text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
-            <Download className="h-4 w-4" />
-          </button>
+          <div className="flex gap-2">
+            <label title="Restore from CSV" className="p-3 bg-white/60 dark:bg-stone-800/60 border border-white dark:border-stone-700/50 rounded-xl text-stone-400 dark:text-stone-500 hover:text-orange-500 hover:border-orange-400 transition-all cursor-pointer shadow-sm">
+              <Upload className="h-4 w-4" />
+              <input type="file" accept=".csv" className="hidden" onChange={(e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (evt) => {
+                  importTransactions(evt.target.result);
+                  alert("Intelligence restored successfully!");
+                };
+                reader.readAsText(file);
+              }} />
+            </label>
+            <button onClick={exportToCSV} title="Export CSV" className="p-3 bg-white/60 dark:bg-stone-800/60 border border-white dark:border-stone-700/50 rounded-xl text-stone-400 dark:text-stone-500 hover:text-orange-500 hover:border-orange-400 transition-all shadow-sm">
+              <Download className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm text-zinc-500 dark:text-zinc-400">
-          <thead className="bg-zinc-50/50 dark:bg-zinc-800/50 text-xs uppercase text-zinc-400 dark:text-zinc-300 font-semibold border-b border-zinc-200 dark:border-zinc-800">
+        <table className="w-full text-left text-sm">
+          <thead className="bg-stone-50/30 dark:bg-stone-800/30 text-[10px] uppercase text-stone-400 dark:text-stone-500 font-bold tracking-[0.2em] border-b border-stone-100 dark:border-stone-800/50">
             <tr>
-              <th className="px-6 py-4">Transaction</th>
-              <th className="px-6 py-4">Date</th>
-              <th className="px-6 py-4">Status</th>
-              <th className="px-6 py-4 text-right">Amount</th>
-              {role === 'admin' && <th className="px-6 py-4 text-right">Actions</th>}
+              <th className="px-8 py-5">Origin / Class</th>
+              <th className="px-8 py-5">Timeline</th>
+              <th className="px-8 py-5">Verification</th>
+              <th className="px-8 py-5 text-right">Magnitude</th>
+              {role === 'admin' && <th className="px-8 py-5 text-right">Actions</th>}
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-stone-50 dark:divide-stone-800/30">
             {filteredTransactions.length === 0 ? (
               <tr>
-                <td colSpan="5" className="px-6 py-12 text-center">
-                  <div className="flex flex-col items-center justify-center text-gray-400">
-                    <p className="text-lg font-medium mb-1">No transactions found</p>
-                    <p className="text-sm">Try adjusting your filters or add a new transaction.</p>
+                <td colSpan="5" className="px-8 py-20 text-center">
+                  <div className="flex flex-col items-center justify-center">
+                    <p className="text-lg font-bold text-stone-900 dark:text-stone-100 mb-1 tracking-tight">No Intelligence Found</p>
+                    <p className="text-xs text-stone-400 dark:text-stone-500 font-medium">Your current filters returned zero results.</p>
                   </div>
                 </td>
               </tr>
             ) : (
               filteredTransactions.map((tx) => (
-                <tr key={tx.id} className="border-b border-stone-100 dark:border-stone-800/50 hover:bg-stone-50 dark:hover:bg-stone-800/50 transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="font-medium text-stone-900 dark:text-white">{tx.category}</div>
-                    <div className="text-xs text-stone-500 capitalize">{tx.type}</div>
+                <tr key={tx.id} className="hover:bg-white/40 dark:hover:bg-stone-800/40 transition-colors group">
+                  <td className="px-8 py-5">
+                    <div className="font-bold text-stone-800 dark:text-stone-100 tracking-tight">{tx.category}</div>
+                    <div className="text-[10px] text-stone-400 dark:text-stone-500 font-bold uppercase tracking-widest">{tx.type}</div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-stone-600 dark:text-stone-400 font-medium">{tx.date}</td>
-                  <td className="px-6 py-4">
-                    <span className={`px-2.5 py-1 text-[10px] font-bold uppercase rounded-md ${tx.status === 'completed' ? 'bg-orange-50 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'}`}>
-                      {tx.status}
+                  <td className="px-8 py-5 whitespace-nowrap text-stone-500 dark:text-stone-400 font-medium italic">{tx.date}</td>
+                  <td className="px-8 py-5">
+                    <span className={`px-3 py-1.5 text-[10px] font-bold uppercase rounded-lg tracking-wider ${tx.status === 'completed' ? 'bg-orange-50 text-orange-600 dark:bg-orange-600/20 dark:text-orange-400 border border-orange-100/50 dark:border-orange-500/10' : 'bg-stone-100 text-stone-500 dark:bg-stone-800/50 dark:text-stone-400 border border-stone-200/50 dark:border-stone-700/50'}`}>
+                      {tx.status === 'completed' ? 'Confirmed' : 'Pending'}
                     </span>
                   </td>
-                  <td className={`px-6 py-4 text-right font-bold whitespace-nowrap ${tx.amount > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-stone-900 dark:text-white'}`}>
+                  <td className={`px-8 py-5 text-right font-bold whitespace-nowrap tabular-nums tracking-tighter text-base ${tx.amount > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-stone-900 dark:text-white'}`}>
                     {tx.amount > 0 ? '+' : ''}
-                    {tx.amount.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
+                    {Math.abs(tx.amount).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
                   </td>
                   {role === 'admin' && (
-                    <td className="px-6 py-4 text-right">
-                      <button onClick={() => deleteTransaction(tx.id)} className="text-red-400 hover:text-red-600 transition-colors p-1">
+                    <td className="px-8 py-5 text-right">
+                      <button onClick={() => deleteTransaction(tx.id)} className="text-stone-300 hover:text-red-500 transition-all p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20">
                         <Trash2 className="h-4 w-4 ml-auto" />
                       </button>
                     </td>
@@ -125,5 +130,6 @@ export default function TransactionsTable() {
         </table>
       </div>
     </div>
+
   );
 }

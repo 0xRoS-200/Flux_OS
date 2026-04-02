@@ -16,26 +16,29 @@ export default function LandingPage() {
   const [photo, setPhoto] = useState("");
 
   useGSAP(() => {
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    const tl = gsap.timeline({ 
+      defaults: { ease: "power2.out", force3D: true } 
+    });
 
-    // Balanced, centered entrance
+    // Snappier, high-performance entrance
     tl.fromTo(".aesthetic-header", 
-      { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.2, delay: 0.5 }
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, delay: 0.3 }
     )
     .fromTo(".aesthetic-card", 
-      { y: 40, opacity: 0, scale: 0.98 },
-      { y: 0, opacity: 1, scale: 1, duration: 1, stagger: 0.15 },
-      "-=0.6"
+      { y: 30, opacity: 0, scale: 0.99 },
+      { y: 0, opacity: 1, scale: 1, duration: 0.7, stagger: 0.1 },
+      "-=0.4"
     );
 
-    // Soft floating effect for the cards
+    // Ultra-subtle drift with hardware acceleration
     gsap.to(".aesthetic-card", {
-      y: "random(-6, 6)",
-      duration: "random(3, 5)",
+      y: "random(-4, 4)",
+      duration: "random(4, 6)",
       repeat: -1,
       yoyo: true,
-      ease: "sine.inOut"
+      ease: "sine.inOut",
+      force3D: true
     });
   }, { scope: containerRef });
 
@@ -51,7 +54,11 @@ export default function LandingPage() {
     const reader = new FileReader();
     reader.onload = (evt) => {
       importTransactions(evt.target.result);
-      alert("Welcome back! Your data has been restored.");
+      // Auto-unlock with a restored profile if none exists
+      if (!useStore.getState().userProfile) {
+        setProfile({ name: "Restored User", email: "local@flux.os", photo: "" });
+      }
+      alert("Intelligence restored successfully. Redirecting to your dashboard.");
     };
     reader.readAsText(file);
   };
@@ -88,52 +95,58 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Aesthetic Main Card - Centered Glassmorphism */}
-        <div className="aesthetic-card relative w-full max-w-xl group px-4">
-          <div className="p-8 md:p-14 rounded-[3.5rem] bg-white/60 dark:bg-stone-900/60 border border-white dark:border-stone-800/10 backdrop-blur-[120px] shadow-[0_30px_90px_rgba(249,115,22,0.08)] dark:shadow-[0_30px_90px_rgba(0,0,0,0.5)] overflow-hidden transition-all hover:bg-white/70 dark:hover:bg-stone-900/70 relative ring-1 ring-white/10">
+        {/* Sexy Modern Main Card - Sharper Glassmorphism */}
+        <div className="aesthetic-card relative w-full max-w-lg group px-4">
+          <div className="p-10 md:p-12 rounded-2xl bg-white/70 dark:bg-stone-950/80 border border-white dark:border-stone-800/20 backdrop-blur-[120px] shadow-[0_40px_100px_rgba(0,0,0,0.12)] dark:shadow-[0_40px_100px_rgba(0,0,0,0.6)] overflow-hidden transition-all relative ring-1 ring-black/5">
             
-            {/* Edge Glow Effect - Sunlight / Ember */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-orange-400/30 dark:via-orange-500/20 to-transparent" />
+            {/* Sexy Amber Glow Line */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-orange-500 to-transparent opacity-80" />
             
-            <header className="mb-12">
-              <h2 className="text-4xl font-bold text-stone-900 dark:text-stone-100 mb-2 tracking-tight">Get Started</h2>
-              <p className="text-stone-500 dark:text-stone-500 text-sm font-medium">Create your secure local profile to continue</p>
+            <header className="mb-12 text-center">
+              <h2 className="text-4xl font-bold text-stone-900 dark:text-stone-100 mb-2 tracking-tighter">Sign In</h2>
+              <p className="text-stone-400 dark:text-stone-500 text-xs font-bold uppercase tracking-[0.3em]">Access local intelligence</p>
             </header>
 
-            <form onSubmit={handleStart} className="flex flex-col gap-8 text-left">
-              <div className="space-y-7">
-                <div className="flex flex-col gap-2.5">
-                  <label className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-[0.2em] ml-1">Identity</label>
-                  <input required type="text" value={name} onChange={e => setName(e.target.value)} className="w-full p-5 bg-stone-50/40 dark:bg-stone-800/40 border border-stone-200/60 dark:border-stone-700/50 rounded-2xl focus:outline-none focus:border-orange-400 focus:bg-white dark:focus:bg-stone-800 text-stone-800 dark:text-stone-200 transition-all text-sm font-medium placeholder-stone-300 dark:placeholder-stone-700 shadow-sm" placeholder="e.g. Satoshi Nakamoto" />
+            <form onSubmit={handleStart} className="flex flex-col gap-8">
+              <div className="space-y-6">
+                <div className="flex flex-col gap-2">
+                  <label className="text-[10px] font-bold text-stone-400 dark:text-stone-600 uppercase tracking-[0.2em] ml-1">Full Name</label>
+                  <input required type="text" value={name} onChange={e => setName(e.target.value)} className="w-full p-4 bg-stone-50/30 dark:bg-stone-900/40 border border-stone-200/50 dark:border-stone-800/50 rounded-xl focus:outline-none focus:border-orange-500/50 focus:bg-white dark:focus:bg-stone-900 text-stone-800 dark:text-white transition-all text-sm font-medium placeholder-stone-300 dark:placeholder-stone-700 shadow-sm" placeholder="Satoshi Nakamoto" />
                 </div>
 
-                <div className="flex flex-col gap-2.5">
-                  <label className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-[0.2em] ml-1">Communication</label>
-                  <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="w-full p-5 bg-stone-50/40 dark:bg-stone-800/40 border border-stone-200/60 dark:border-stone-700/50 rounded-2xl focus:outline-none focus:border-orange-400 focus:bg-white dark:focus:bg-stone-800 text-stone-800 dark:text-stone-200 transition-all text-sm font-medium placeholder-stone-300 dark:placeholder-stone-700 shadow-sm" placeholder="hello@flux.com" />
+                <div className="flex flex-col gap-2">
+                  <label className="text-[10px] font-bold text-stone-400 dark:text-stone-600 uppercase tracking-[0.2em] ml-1">Email Address</label>
+                  <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="w-full p-4 bg-stone-50/30 dark:bg-stone-900/40 border border-stone-200/50 dark:border-stone-800/50 rounded-xl focus:outline-none focus:border-orange-500/50 focus:bg-white dark:focus:bg-stone-900 text-stone-800 dark:text-white transition-all text-sm font-medium placeholder-stone-300 dark:placeholder-stone-700 shadow-sm" placeholder="local@flux.os" />
                 </div>
 
-                <div className="flex flex-col gap-2.5">
-                  <div className="flex justify-between items-center mb-1 px-1">
-                    <label className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-[0.2em]">Signature Profile</label>
-                  </div>
-                  <div className="flex gap-4">
-                    <input type="text" value={photo} onChange={e => setPhoto(e.target.value)} className="flex-1 p-5 bg-stone-50/40 dark:bg-stone-800/40 border border-stone-200/60 dark:border-stone-700/50 rounded-2xl focus:outline-none focus:border-orange-400 text-stone-800 dark:text-stone-200 truncate transition-all text-sm font-medium placeholder-stone-300 dark:placeholder-stone-700 shadow-sm" placeholder="Avatar URL..." />
-                    <label className="cursor-pointer p-5 bg-stone-100/60 hover:bg-white dark:bg-stone-800/60 dark:hover:bg-stone-700/80 rounded-2xl border border-stone-200/60 dark:border-stone-700/50 transition-all flex items-center justify-center shadow-sm">
-                      <ImageIcon className="w-5 h-5 text-stone-400 dark:text-stone-500" />
+                <div className="flex flex-col gap-2">
+                  <label className="text-[10px] font-bold text-stone-400 dark:text-stone-600 uppercase tracking-[0.2em] ml-1">Avatar / Identity Signature</label>
+                  <div className="flex gap-3">
+                    <input type="text" value={photo} onChange={e => setPhoto(e.target.value)} className="flex-1 p-4 bg-stone-50/30 dark:bg-stone-900/40 border border-stone-200/50 dark:border-stone-800/50 rounded-xl focus:outline-none focus:border-orange-500/50 text-stone-800 dark:text-white truncate transition-all text-sm font-medium placeholder-stone-300 dark:placeholder-stone-700 shadow-sm" placeholder="Image URL..." />
+                    <label className="cursor-pointer p-4 bg-stone-100/60 dark:bg-stone-800/60 rounded-xl border border-stone-200/50 dark:border-stone-800/50 transition-all flex items-center justify-center hover:bg-orange-500 hover:text-white dark:hover:bg-orange-600 shadow-sm">
+                      <ImageIcon className="w-5 h-5" />
                       <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
                     </label>
                   </div>
                 </div>
               </div>
 
-              <button type="submit" className="w-full mt-4 flex items-center justify-center gap-4 p-6 bg-stone-900 dark:bg-orange-600 text-white font-bold text-sm rounded-[2rem] active:scale-[0.98] transition-all hover:shadow-2xl hover:shadow-orange-500/30 hover:-translate-y-1">
-                Launch Intelligence Dashboard <ArrowRight className="w-4 h-4" />
+              <button type="submit" className="w-full mt-2 flex items-center justify-center gap-3 p-5 bg-stone-900 dark:bg-orange-600 text-white font-bold text-sm rounded-xl active:scale-[0.98] transition-all hover:shadow-2xl hover:shadow-orange-500/30 tracking-tight">
+                Enter Dashboard <ArrowRight className="w-4 h-4" />
               </button>
 
-              {lastProfile && (
-                <button type="button" onClick={() => setProfile(lastProfile)} className="w-full py-5 text-[10px] font-bold text-stone-400 dark:text-stone-500 hover:text-orange-500 transition-colors tracking-[0.2em] uppercase border-t border-stone-100 dark:border-stone-800/50 mt-4">
-                  RE-ACCESS: {lastProfile.name.split(' ')[0]}
+              {lastProfile ? (
+                <button type="button" onClick={() => setProfile(lastProfile)} className="w-full py-4 text-[10px] font-bold text-stone-400 dark:text-stone-500 hover:text-orange-500 transition-colors tracking-[0.3em] uppercase border-t border-stone-100 dark:border-stone-800/50 mt-2">
+                  RESUME: {lastProfile.name.split(' ')[0]}
                 </button>
+              ) : (
+                <div className="flex justify-center border-t border-stone-100 dark:border-stone-800/50 pt-6 mt-2">
+                   <label className="cursor-pointer flex items-center gap-2 group">
+                      <Download className="w-3.5 h-3.5 text-stone-400 group-hover:text-orange-500 transition-colors" />
+                      <span className="text-[10px] font-bold text-stone-400 group-hover:text-stone-600 dark:group-hover:text-stone-300 uppercase tracking-widest transition-colors">Restore from CSV</span>
+                      <input type="file" accept=".csv" className="hidden" onChange={handleFileUpload} />
+                    </label>
+                </div>
               )}
             </form>
           </div>
