@@ -2,7 +2,8 @@
 
 A premium, modern, and offline-first personal finance dashboard built with React, Vite, TailwindCSS, and Zustand. It operates 100% locally on your machine, requiring zero cloud dependencies or backend servers.
 
-![Flux Screenshot Placeholder](#)
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/1d457839-5ffc-48cd-bd98-bd4fe9187989" />
+
 
 ## Features
 - **Offline-First Storage:** Uses IndexedDB via Zustand for secure, persistent local caching. 
@@ -22,7 +23,7 @@ Make sure you have **Node.js** and **Yarn** installed on your system.
 ### 1. Initialize Project
 Navigate to the project directory and install the required dependencies:
 ```bash
-cd zorvyn-assessment
+cd Flux_OS
 yarn install
 ```
 
