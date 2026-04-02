@@ -11,7 +11,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: 'auto',
-      includeAssets: ['zoro.jpg'],
+      includeAssets: ['pwa-icon.png'],
       devOptions: {
         enabled: true,
         type: 'module',
@@ -26,14 +26,22 @@ export default defineConfig({
         start_url: '/',
         icons: [
           {
-            src: 'zoro.jpg',
+            src: 'pwa-icon.png',
             sizes: '192x192',
-            type: 'image/jpeg'
+            type: 'image/png',
+            purpose: 'any'
           },
           {
-            src: 'zoro.jpg',
+            src: 'pwa-icon.png',
             sizes: '512x512',
-            type: 'image/jpeg'
+            type: 'image/png',
+            purpose: 'any'
+          },
+          {
+            src: 'pwa-icon.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable'
           }
         ]
       }
