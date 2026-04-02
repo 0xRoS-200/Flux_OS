@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import { useStore } from "../store/useStore";
-import { Plus, Moon, Sun } from "lucide-react";
+import { Plus, Moon, Sun, MonitorSmartphone } from "lucide-react";
 
 import SummaryCards from "./SummaryCards";
 import BalanceChart from "./BalanceChart";
@@ -13,10 +13,28 @@ import TransactionModal from "./TransactionModal";
 export default function Dashboard() {
   const { role, theme, toggleTheme, fetchTransactions, isLoading, activeTab } = useStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
 
   useEffect(() => {
     fetchTransactions();
+
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
   }, [fetchTransactions]);
+
+  const handleInstall = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setDeferredPrompt(null);
+    }
+  };
 
   return (
     <div className={`${theme === 'dark' ? 'dark' : ''}`}>
@@ -33,6 +51,15 @@ export default function Dashboard() {
             </div>
 
             <div className="flex items-center gap-3 w-full sm:w-auto">
+              {deferredPrompt && (
+                <button
+                  onClick={handleInstall}
+                  className="flex items-center gap-2 px-4 py-2 bg-white/40 dark:bg-stone-900/60 border border-white/60 dark:border-stone-800/10 backdrop-blur-md text-stone-600 dark:text-stone-300 hover:text-orange-500 dark:hover:text-orange-400 hover:shadow-sm transition-all rounded-xl text-sm font-bold animate-pulse"
+                >
+                  <MonitorSmartphone className="h-4 w-4" />
+                  <span className="hidden xs:inline">Install App</span>
+                </button>
+              )}
               <button
                 onClick={toggleTheme}
                 className="p-2 rounded-xl bg-white/40 dark:bg-stone-900/60 border border-white/60 dark:border-stone-800/10 backdrop-blur-md text-stone-600 dark:text-stone-300 hover:shadow-sm transition-all"
