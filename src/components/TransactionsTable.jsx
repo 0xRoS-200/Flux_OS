@@ -40,7 +40,7 @@ export default function TransactionsTable() {
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-slate-700 dark:text-white border border-gray-200 dark:border-slate-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              className="w-full pl-9 pr-4 py-2 bg-stone-50 dark:bg-stone-800 dark:text-white border border-stone-200 dark:border-stone-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20"
             />
           </div>
 
@@ -96,20 +96,18 @@ export default function TransactionsTable() {
               </tr>
             ) : (
               filteredTransactions.map((tx) => (
-                <tr key={tx.id} className="border-b border-zinc-100 dark:border-zinc-800/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
+                <tr key={tx.id} className="border-b border-stone-100 dark:border-stone-800/50 hover:bg-stone-50 dark:hover:bg-stone-800/50 transition-colors">
                   <td className="px-6 py-4">
-                    <div className="font-medium text-zinc-900 dark:text-white">{tx.category}</div>
-                    <div className="text-xs text-zinc-500 capitalize">{tx.type}</div>
+                    <div className="font-medium text-stone-900 dark:text-white">{tx.category}</div>
+                    <div className="text-xs text-stone-500 capitalize">{tx.type}</div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{tx.date}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-stone-600 dark:text-stone-400 font-medium">{tx.date}</td>
                   <td className="px-6 py-4">
-                    <span className={`px-2.5 py-1 text-[10px] font-bold uppercase rounded-md ${tx.status === 'completed' ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
-                      }`}>
+                    <span className={`px-2.5 py-1 text-[10px] font-bold uppercase rounded-md ${tx.status === 'completed' ? 'bg-orange-50 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'}`}>
                       {tx.status}
                     </span>
                   </td>
-                  <td className={`px-6 py-4 text-right font-bold whitespace-nowrap ${tx.amount > 0 ? 'text-blue-600 dark:text-blue-400' : 'text-zinc-900 dark:text-white'
-                    }`}>
+                  <td className={`px-6 py-4 text-right font-bold whitespace-nowrap ${tx.amount > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-stone-900 dark:text-white'}`}>
                     {tx.amount > 0 ? '+' : ''}
                     {tx.amount.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
                   </td>

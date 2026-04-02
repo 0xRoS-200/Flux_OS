@@ -1,174 +1,170 @@
 import React, { useState, useRef } from "react";
 import { useStore } from "../store/useStore";
-import { Upload, ArrowRight, WalletCards, ShieldCheck, Zap, Download, Image as ImageIcon } from "lucide-react";
+import { ArrowRight, WalletCards, ShieldCheck, Zap, Download, Image as ImageIcon, Sparkles } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import ShaderBackground from "./ShaderBackground";
 
 export default function LandingPage() {
-    const setProfile = useStore(state => state.setProfile);
-    const lastProfile = useStore(state => state.lastProfile);
-    const importTransactions = useStore(state => state.importTransactions);
-    const containerRef = useRef(null);
+  const setProfile = useStore(state => state.setProfile);
+  const lastProfile = useStore(state => state.lastProfile);
+  const importTransactions = useStore(state => state.importTransactions);
+  const containerRef = useRef(null);
 
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [photo, setPhoto] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [photo, setPhoto] = useState("");
 
-    useGSAP(() => {
-        const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+  useGSAP(() => {
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-        tl.fromTo(".bg-shape",
-            { scale: 0.8, opacity: 0 },
-            { scale: 1, opacity: 1, duration: 2, stagger: 0.3 }
-        )
-            .fromTo(".hero-title span",
-                { y: 50, opacity: 0 },
-                { y: 0, opacity: 1, duration: 1, stagger: 0.1 },
-                "-=1.5"
-            )
-            .fromTo(".hero-item",
-                { y: 30, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.8, stagger: 0.1 },
-                "-=1.0"
-            )
-            .fromTo(".hero-card",
-                { scale: 0.95, opacity: 0, y: 40 },
-                { scale: 1, opacity: 1, y: 0, duration: 1, ease: "expo.out" },
-                "-=0.8"
-            );
-
-        gsap.to(".bg-shape-1", {
-            y: -30, x: 20, rotation: 10,
-            duration: 6, repeat: -1, yoyo: true, ease: "sine.inOut"
-        });
-        gsap.to(".bg-shape-2", {
-            y: 40, x: -30, rotation: -15,
-            duration: 8, repeat: -1, yoyo: true, ease: "sine.inOut"
-        });
-    }, { scope: containerRef });
-
-    const handleStart = (e) => {
-        e.preventDefault();
-        if (!name || !email) return;
-        setProfile({ name, email, photo });
-    };
-
-    const handleFileUpload = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-            importTransactions(evt.target.result);
-            alert("Transactions successfully restored! Please complete your profile to access your dashboard.");
-        };
-        reader.readAsText(file);
-    };
-
-    const handlePhotoUpload = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-            setPhoto(evt.target.result);
-        };
-        reader.readAsDataURL(file);
-    };
-
-    return (
-        <div ref={containerRef} className="relative min-h-screen bg-slate-50 dark:bg-[#030712] overflow-hidden flex flex-col items-center justify-center p-4 selection:bg-blue-500/30 transition-colors duration-500">
-
-            <div className="bg-shape bg-shape-1 absolute top-[-10%] left-[-10%] w-[40rem] h-[40rem] bg-blue-600/10 dark:bg-blue-600/20 rounded-full blur-[120px] pointer-events-none mix-blend-multiply dark:mix-blend-screen transition-opacity duration-500" />
-            <div className="bg-shape bg-shape-2 absolute bottom-[-10%] right-[-10%] w-[35rem] h-[35rem] bg-indigo-600/10 dark:bg-indigo-600/20 rounded-full blur-[100px] pointer-events-none mix-blend-multiply dark:mix-blend-screen transition-opacity duration-500" />
-
-            <div className="relative z-10 max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-
-                <div className="lg:col-span-7 flex flex-col gap-8">
-                    <div className="hero-item flex items-center gap-3 w-max px-4 py-2 bg-blue-100 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 rounded-full backdrop-blur-md">
-                        <WalletCards className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                        <span className="text-sm font-bold text-blue-900 dark:text-blue-100 tracking-wide uppercase">Flux Payments OS</span>
-                    </div>
-
-                    <h1 className="hero-title text-6xl md:text-7xl font-extrabold text-slate-900 dark:text-white leading-[1.1] tracking-tight">
-                        <span className="block">Take Control of</span>
-                        <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">Your Wealth.</span>
-                    </h1>
-
-                    <p className="hero-item text-slate-600 dark:text-zinc-400 text-xl leading-relaxed max-w-2xl font-medium dark:font-light">
-                        A beautiful, blazing-fast, and entirely local personal finance engine. Your data never leaves your device. No cloud. No subscriptions. Completely yours.
-                    </p>
-
-                    <div className="hero-item grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
-                        <div className="flex flex-col gap-2 p-5 rounded-2xl bg-white/60 dark:bg-zinc-900/40 border border-slate-200/50 dark:border-zinc-800/50 backdrop-blur-sm shadow-sm dark:shadow-none">
-                            <ShieldCheck className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                            <h3 className="text-slate-900 dark:text-white font-bold">100% Local</h3>
-                            <p className="text-slate-500 dark:text-zinc-500 text-sm font-medium dark:font-normal">Offline-first standard via IndexedDB persistent cache.</p>
-                        </div>
-                        <div className="flex flex-col gap-2 p-5 rounded-2xl bg-white/60 dark:bg-zinc-900/40 border border-slate-200/50 dark:border-zinc-800/50 backdrop-blur-sm shadow-sm dark:shadow-none">
-                            <Zap className="h-6 w-6 text-amber-500 dark:text-amber-400" />
-                            <h3 className="text-slate-900 dark:text-white font-bold">PWA Ready</h3>
-                            <p className="text-slate-500 dark:text-zinc-500 text-sm font-medium dark:font-normal">Install locally without App Store bloat. Blazing fast.</p>
-                        </div>
-                    </div>
-
-                    <div className="hero-item mt-6 p-6 bg-white/80 dark:bg-zinc-900/50 backdrop-blur-xl border border-slate-200 dark:border-zinc-800 rounded-3xl flex flex-col sm:flex-row items-center gap-6 justify-between group hover:border-blue-300 dark:hover:border-blue-500/30 transition-all duration-300 shadow-md dark:shadow-none">
-                        <div className="flex items-start gap-4">
-                            <div className="p-3 bg-slate-100 dark:bg-zinc-800 rounded-xl group-hover:bg-blue-50 dark:group-hover:bg-blue-500/10 transition-colors">
-                                <Download className="h-6 w-6 text-slate-500 dark:text-zinc-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
-                            </div>
-                            <div>
-                                <h4 className="text-slate-900 dark:text-zinc-100 font-bold mb-1">Recovering lost data?</h4>
-                                <p className="text-sm text-slate-500 dark:text-zinc-500 max-w-xs font-medium dark:font-normal">Upload your previously exported transaction backup CSV.</p>
-                            </div>
-                        </div>
-                        <label className="shrink-0 cursor-pointer bg-slate-900 dark:bg-white text-white dark:text-zinc-900 font-bold py-3.5 px-6 rounded-xl hover:bg-slate-800 dark:hover:bg-zinc-200 transition-all shadow-lg hover:scale-105 active:scale-95">
-                            Upload Backup
-                            <input type="file" accept=".csv" className="hidden" onChange={handleFileUpload} />
-                        </label>
-                    </div>
-                </div>
-
-                <div className="lg:col-span-5 hero-card">
-                    <div className="bg-white/90 dark:bg-zinc-900/80 backdrop-blur-3xl border border-slate-200 dark:border-zinc-800/80 rounded-[2.5rem] p-8 shadow-2xl dark:shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-                        <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-2">Initialize Local Profile</h2>
-                        <p className="text-slate-500 dark:text-zinc-400 text-sm mb-8 font-medium dark:font-normal">Setup your encrypted native dashboard.</p>
-
-                        <form onSubmit={handleStart} className="flex flex-col gap-5">
-                            <div>
-                                <label className="text-sm font-bold text-slate-700 dark:text-zinc-300 block mb-1.5">Full Name</label>
-                                <input required type="text" value={name} onChange={e => setName(e.target.value)} className="w-full p-4 bg-slate-50 dark:bg-zinc-950/50 border border-slate-200 dark:border-zinc-800 rounded-2xl focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-slate-900 dark:text-white transition-all text-sm shadow-inner font-medium placeholder-slate-400 dark:placeholder-zinc-600" placeholder="Jessica Alba" />
-                            </div>
-
-                            <div>
-                                <label className="text-sm font-bold text-slate-700 dark:text-zinc-300 block mb-1.5">Email Address</label>
-                                <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="w-full p-4 bg-slate-50 dark:bg-zinc-950/50 border border-slate-200 dark:border-zinc-800 rounded-2xl focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-slate-900 dark:text-white transition-all text-sm shadow-inner font-medium placeholder-slate-400 dark:placeholder-zinc-600" placeholder="jessica@example.com" />
-                            </div>
-
-                            <div>
-                                <label className="text-sm font-bold text-slate-700 dark:text-zinc-300 block mb-1.5">Profile Photo <span className="text-slate-400 dark:text-zinc-600 font-normal">(Optional)</span></label>
-                                <div className="flex gap-2">
-                                    <input type="text" value={photo} onChange={e => setPhoto(e.target.value)} className="w-full flex-1 p-4 bg-slate-50 dark:bg-zinc-950/50 border border-slate-200 dark:border-zinc-800 rounded-2xl focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-slate-900 dark:text-white transition-all text-sm shadow-inner overflow-hidden text-ellipsis whitespace-nowrap font-medium placeholder-slate-400 dark:placeholder-zinc-600" placeholder="https://example.com/avatar.jpg" />
-                                    <label className="cursor-pointer shrink-0 bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-600 dark:text-zinc-300 flex items-center justify-center px-5 rounded-2xl border border-slate-200 dark:border-zinc-700 transition-colors shadow-sm" title="Upload Local JPG">
-                                        <ImageIcon className="h-5 w-5" />
-                                        <input type="file" accept="image/jpeg, image/png, image/webp" className="hidden" onChange={handlePhotoUpload} />
-                                    </label>
-                                </div>
-                                <p className="text-xs text-slate-500 dark:text-zinc-500 mt-2 font-semibold dark:font-medium">Link a URL or upload a JPG to set your avatar. Leave blank for initials.</p>
-                            </div>
-
-                            <button type="submit" className="w-full mt-4 bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-4 rounded-2xl transition-all hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center gap-2 shadow-lg dark:shadow-none">
-                                Launch Dashboard <ArrowRight className="h-5 w-5" />
-                            </button>
-
-                            {lastProfile && (
-                                <button type="button" onClick={() => setProfile(lastProfile)} className="w-full mt-2 bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-300 font-bold py-4 px-4 rounded-2xl transition-all flex items-center justify-center gap-2 border border-slate-200 dark:border-zinc-700 shadow-sm dark:shadow-none">
-                                    Rejoin as {lastProfile.name} <ArrowRight className="h-4 w-4" />
-                                </button>
-                            )}
-                        </form>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+    // Balanced, centered entrance
+    tl.fromTo(".aesthetic-header", 
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.2, delay: 0.5 }
+    )
+    .fromTo(".aesthetic-card", 
+      { y: 40, opacity: 0, scale: 0.98 },
+      { y: 0, opacity: 1, scale: 1, duration: 1, stagger: 0.15 },
+      "-=0.6"
     );
+
+    // Soft floating effect for the cards
+    gsap.to(".aesthetic-card", {
+      y: "random(-6, 6)",
+      duration: "random(3, 5)",
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+  }, { scope: containerRef });
+
+  const handleStart = (e) => {
+    e.preventDefault();
+    if (!name || !email) return;
+    setProfile({ name, email, photo });
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      importTransactions(evt.target.result);
+      alert("Welcome back! Your data has been restored.");
+    };
+    reader.readAsText(file);
+  };
+
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => setPhoto(evt.target.result);
+    reader.readAsDataURL(file);
+  };
+
+  return (
+    <div ref={containerRef} className="relative min-h-screen w-full flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden selection:bg-sky-500/20">
+      <ShaderBackground />
+
+      <div className="relative z-10 w-full max-w-5xl flex flex-col items-center gap-16 text-center">
+        
+        {/* Aesthetic Header Section */}
+        <div className="aesthetic-header flex flex-col items-center gap-6">
+          <div className="aesthetic-card flex items-center gap-2 px-4 py-2 bg-white/40 dark:bg-black/20 border border-white/60 dark:border-white/10 rounded-full backdrop-blur-md shadow-sm transition-transform hover:scale-105">
+            <Sparkles className="w-4 h-4 text-orange-500" />
+            <span className="text-xs font-semibold text-orange-600 dark:text-orange-400 uppercase tracking-widest">Flux Intelligence v1.0</span>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <h1 className="text-5xl md:text-7xl font-semibold text-slate-900 dark:text-stone-200 leading-tight tracking-tight">
+              Manage Wealth <br /> 
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-400">Beautifully.</span>
+            </h1>
+            <p className="max-w-2xl text-lg md:text-xl text-slate-500 dark:text-stone-400 font-medium leading-relaxed">
+              Experience a private, local-first finance engine designed for simplicity. Your data is encrypted, secure, and stays entirely on your device.
+            </p>
+          </div>
+        </div>
+
+        {/* Aesthetic Main Card - Centered Glassmorphism */}
+        <div className="aesthetic-card relative w-full max-w-xl group px-4">
+          <div className="p-8 md:p-14 rounded-[3.5rem] bg-white/60 dark:bg-stone-900/60 border border-white dark:border-stone-800/10 backdrop-blur-[120px] shadow-[0_30px_90px_rgba(249,115,22,0.08)] dark:shadow-[0_30px_90px_rgba(0,0,0,0.5)] overflow-hidden transition-all hover:bg-white/70 dark:hover:bg-stone-900/70 relative ring-1 ring-white/10">
+            
+            {/* Edge Glow Effect - Sunlight / Ember */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-orange-400/30 dark:via-orange-500/20 to-transparent" />
+            
+            <header className="mb-12">
+              <h2 className="text-4xl font-bold text-stone-900 dark:text-stone-100 mb-2 tracking-tight">Get Started</h2>
+              <p className="text-stone-500 dark:text-stone-500 text-sm font-medium">Create your secure local profile to continue</p>
+            </header>
+
+            <form onSubmit={handleStart} className="flex flex-col gap-8 text-left">
+              <div className="space-y-7">
+                <div className="flex flex-col gap-2.5">
+                  <label className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-[0.2em] ml-1">Identity</label>
+                  <input required type="text" value={name} onChange={e => setName(e.target.value)} className="w-full p-5 bg-stone-50/40 dark:bg-stone-800/40 border border-stone-200/60 dark:border-stone-700/50 rounded-2xl focus:outline-none focus:border-orange-400 focus:bg-white dark:focus:bg-stone-800 text-stone-800 dark:text-stone-200 transition-all text-sm font-medium placeholder-stone-300 dark:placeholder-stone-700 shadow-sm" placeholder="e.g. Satoshi Nakamoto" />
+                </div>
+
+                <div className="flex flex-col gap-2.5">
+                  <label className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-[0.2em] ml-1">Communication</label>
+                  <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="w-full p-5 bg-stone-50/40 dark:bg-stone-800/40 border border-stone-200/60 dark:border-stone-700/50 rounded-2xl focus:outline-none focus:border-orange-400 focus:bg-white dark:focus:bg-stone-800 text-stone-800 dark:text-stone-200 transition-all text-sm font-medium placeholder-stone-300 dark:placeholder-stone-700 shadow-sm" placeholder="hello@flux.com" />
+                </div>
+
+                <div className="flex flex-col gap-2.5">
+                  <div className="flex justify-between items-center mb-1 px-1">
+                    <label className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-[0.2em]">Signature Profile</label>
+                  </div>
+                  <div className="flex gap-4">
+                    <input type="text" value={photo} onChange={e => setPhoto(e.target.value)} className="flex-1 p-5 bg-stone-50/40 dark:bg-stone-800/40 border border-stone-200/60 dark:border-stone-700/50 rounded-2xl focus:outline-none focus:border-orange-400 text-stone-800 dark:text-stone-200 truncate transition-all text-sm font-medium placeholder-stone-300 dark:placeholder-stone-700 shadow-sm" placeholder="Avatar URL..." />
+                    <label className="cursor-pointer p-5 bg-stone-100/60 hover:bg-white dark:bg-stone-800/60 dark:hover:bg-stone-700/80 rounded-2xl border border-stone-200/60 dark:border-stone-700/50 transition-all flex items-center justify-center shadow-sm">
+                      <ImageIcon className="w-5 h-5 text-stone-400 dark:text-stone-500" />
+                      <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <button type="submit" className="w-full mt-4 flex items-center justify-center gap-4 p-6 bg-stone-900 dark:bg-orange-600 text-white font-bold text-sm rounded-[2rem] active:scale-[0.98] transition-all hover:shadow-2xl hover:shadow-orange-500/30 hover:-translate-y-1">
+                Launch Intelligence Dashboard <ArrowRight className="w-4 h-4" />
+              </button>
+
+              {lastProfile && (
+                <button type="button" onClick={() => setProfile(lastProfile)} className="w-full py-5 text-[10px] font-bold text-stone-400 dark:text-stone-500 hover:text-orange-500 transition-colors tracking-[0.2em] uppercase border-t border-stone-100 dark:border-stone-800/50 mt-4">
+                  RE-ACCESS: {lastProfile.name.split(' ')[0]}
+                </button>
+              )}
+            </form>
+          </div>
+        </div>
+
+        {/* Aesthetic Secondary Content - Horizontal Feature Flow */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl">
+          <div className="aesthetic-card p-6 rounded-[2rem] bg-white/20 dark:bg-white/5 border border-white/40 dark:border-white/10 backdrop-blur-xl flex flex-col items-center gap-4 transition-all hover:bg-white/40 hover:scale-105">
+            <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-orange-500/10 text-orange-500">
+              <ShieldCheck className="w-6 h-6" />
+            </div>
+            <h3 className="text-slate-800 dark:text-stone-200 font-bold text-sm">Encrypted</h3>
+          </div>
+          <div className="aesthetic-card p-6 rounded-[2rem] bg-white/20 dark:bg-white/5 border border-white/40 dark:border-white/10 backdrop-blur-xl flex flex-col items-center gap-4 transition-all hover:bg-white/40 hover:scale-105">
+            <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-amber-500/10 text-amber-500">
+              <Zap className="w-6 h-6" />
+            </div>
+            <h3 className="text-slate-800 dark:text-stone-200 font-bold text-sm">Offline</h3>
+          </div>
+          <div className="aesthetic-card p-6 rounded-[2rem] bg-white/20 dark:bg-white/5 border border-white/40 dark:border-white/10 backdrop-blur-xl flex flex-col items-center gap-4 transition-all hover:bg-white/40 hover:scale-105 group cursor-pointer overflow-hidden">
+            <label className="cursor-pointer flex flex-col items-center gap-4">
+              <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-500/10 text-slate-500 group-hover:bg-slate-900 dark:group-hover:bg-orange-600 group-hover:text-white transition-all">
+                <Download className="w-6 h-6" />
+              </div>
+              <h3 className="text-slate-800 dark:text-stone-200 font-bold text-sm">Restore</h3>
+              <input type="file" accept=".csv" className="hidden" onChange={handleFileUpload} />
+            </label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
 }
