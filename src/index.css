@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --text: #09090b;
+  --text-h: #000000;
+  --bg: #fafafa;
+  --border: #e4e4e7;
+  --code-bg: #f4f4f5;
+  --accent: #2563eb;
+  --accent-bg: rgba(37, 99, 235, 0.1);
+  --accent-border: rgba(37, 99, 235, 0.5);
+  --social-bg: rgba(244, 244, 245, 0.5);
+  --shadow: rgba(0, 0, 0, 0.05) 0 4px 6px -1px, rgba(0, 0, 0, 0.03) 0 2px 4px -1px;
+
+  --sans: system-ui, "Inter", "Segoe UI", Roboto, sans-serif;
+  --heading: system-ui, "Inter", "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Consolas, monospace;
+
+  font: 16px/150% var(--sans);
+  letter-spacing: -0.01em;
+  color-scheme: light;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 15px;
+  }
+}
+
+.dark {
+  --text: #a1a1aa;
+  --text-h: #fafafa;
+  --bg: #09090b;
+  --border: #27272a;
+  --code-bg: #18181b;
+  --accent: #3b82f6;
+  --accent-bg: rgba(59, 130, 246, 0.15);
+  --accent-border: rgba(59, 130, 246, 0.5);
+  --social-bg: rgba(39, 39, 42, 0.5);
+  --shadow: rgba(0, 0, 0, 0.5) 0 10px 15px -3px, rgba(0, 0, 0, 0.4) 0 4px 6px -2px;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#root {
+  width: 100vw;
+  max-width: 100%;
+  margin: 0;
+  text-align: center;
+  border-inline: 1px solid var(--border);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
