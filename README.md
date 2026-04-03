@@ -1,6 +1,6 @@
 # Flux Payments OS
 
-A premium, modern, and offline-first personal finance dashboard built with React, Vite, TailwindCSS, and Zustand. It operates 100% locally on your machine, requiring zero cloud dependencies or backend servers.
+A premium, modern, and offline-first personal finance dashboard built with React, Vite, TailwindCSS, Zustand, and Recharts. It operates 100% locally on your machine, requiring zero cloud dependencies or backend servers.
 
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/1d457839-5ffc-48cd-bd98-bd4fe9187989" />
 
@@ -63,5 +63,6 @@ yarn preview
 - **State Management:** Zustand (w/ Persistence Middleware)
 - **Styling:** TailwindCSS
 - **Animations:** GSAP (`@gsap/react`)
+- **Data Visualization:** Recharts
 - **Icons:** Lucide React
 - **PWA:** `vite-plugin-pwa`
