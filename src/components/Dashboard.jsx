@@ -7,11 +7,12 @@ import SummaryCards from "./SummaryCards";
 import BalanceChart from "./BalanceChart";
 import SpendingBreakdown from "./SpendingBreakdown";
 import InsightsPanel from "./InsightsPanel";
+import DeepAnalytics from "./DeepAnalytics";
 import TransactionsTable from "./TransactionsTable";
 import TransactionModal from "./TransactionModal";
 
 export default function Dashboard() {
-  const { role, theme, toggleTheme, fetchTransactions, isLoading, activeTab, triggerAdminRequest } = useStore();
+  const { role, theme, toggleTheme, fetchTransactions, isLoading, activeTab, triggerAdminRequest, editingTransaction, setEditingTransaction } = useStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
 
@@ -101,15 +102,18 @@ export default function Dashboard() {
                 </div>
               )}
               {activeTab === "Analytics" && (
-                <div className="grid grid-cols-1 gap-6">
-                  <SummaryCards />
-                  <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                    <BalanceChart />
-                    <div className="flex flex-col gap-6">
-                      <SpendingBreakdown />
-                      <InsightsPanel />
+                <div className="flex flex-col">
+                  <div className="grid grid-cols-1 gap-6">
+                    <SummaryCards />
+                    <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                      <BalanceChart />
+                      <div className="flex flex-col gap-6">
+                        <SpendingBreakdown />
+                        <InsightsPanel />
+                      </div>
                     </div>
                   </div>
+                  <DeepAnalytics />
                 </div>
               )}
             </>
@@ -118,7 +122,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <TransactionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <TransactionModal isOpen={isModalOpen || !!editingTransaction} onClose={() => { setIsModalOpen(false); setEditingTransaction(null); }} />
     </div>
   );
 }

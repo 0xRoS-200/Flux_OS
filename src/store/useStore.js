@@ -30,6 +30,9 @@ export const useStore = create(
         setTimeout(() => set({ needAdminAction: false }), 2000);
       },
       
+      editingTransaction: null,
+      setEditingTransaction: (tx) => set({ editingTransaction: tx }),
+      
       transactions: initialTransactions,
       isLoading: false,
       

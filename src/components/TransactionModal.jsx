@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { X } from "lucide-react";
 import { useStore } from "../store/useStore";
 import { useGSAP } from "@gsap/react";
@@ -6,6 +6,8 @@ import gsap from "gsap";
 
 export default function TransactionModal({ isOpen, onClose }) {
   const addTransaction = useStore((state) => state.addTransaction);
+  const updateTransaction = useStore((state) => state.updateTransaction);
+  const editingTransaction = useStore((state) => state.editingTransaction);
   const modalRef = useRef(null);
   const overlayRef = useRef(null);
 
@@ -24,6 +26,26 @@ export default function TransactionModal({ isOpen, onClose }) {
     }
   }, { dependencies: [isOpen] });
 
+  useEffect(() => {
+    if (editingTransaction) {
+      setFormData({
+        category: editingTransaction.category,
+        amount: Math.abs(editingTransaction.amount),
+        type: editingTransaction.type,
+        status: editingTransaction.status,
+        date: editingTransaction.date
+      });
+    } else {
+      setFormData({
+        category: "",
+        amount: "",
+        type: "expense",
+        status: "completed",
+        date: new Date().toISOString().split('T')[0]
+      });
+    }
+  }, [editingTransaction, isOpen]);
+
   if (!isOpen) return null;
 
   const handleSubmit = (e) => {
@@ -31,10 +53,15 @@ export default function TransactionModal({ isOpen, onClose }) {
     gsap.to(overlayRef.current, { opacity: 0, duration: 0.2 });
     gsap.to(modalRef.current, {
       scale: 0.9, opacity: 0, y: -20, duration: 0.2, onComplete: () => {
-        addTransaction({
+        const payload = {
           ...formData,
           amount: formData.type === 'expense' ? -Math.abs(formData.amount) : Math.abs(formData.amount)
-        });
+        };
+        if (editingTransaction) {
+          updateTransaction({ ...editingTransaction, ...payload });
+        } else {
+          addTransaction(payload);
+        }
         setFormData({ ...formData, category: "", amount: "" });
         onClose();
       }
@@ -50,7 +77,7 @@ export default function TransactionModal({ isOpen, onClose }) {
 
         <div className="flex justify-between items-center mb-10">
           <div className="flex flex-col">
-            <h2 className="text-2xl font-bold text-stone-900 dark:text-stone-100 tracking-tight">New Entry</h2>
+            <h2 className="text-2xl font-bold text-stone-900 dark:text-stone-100 tracking-tight">{editingTransaction ? "Edit Entry" : "New Entry"}</h2>
             <p className="text-[10px] font-bold text-orange-500 dark:text-orange-400 uppercase tracking-[0.2em]">Flux Ledger v1</p>
           </div>
           <button onClick={onClose} className="p-3 bg-stone-100 dark:bg-stone-800/50 text-stone-400 hover:text-orange-500 rounded-2xl transition-all hover:scale-110 active:scale-95">
@@ -95,7 +122,7 @@ export default function TransactionModal({ isOpen, onClose }) {
           </div>
 
           <button type="submit" className="w-full mt-2 p-6 bg-stone-900 dark:bg-orange-600 text-white font-bold text-sm rounded-[2rem] active:scale-[0.98] transition-all hover:shadow-2xl hover:shadow-orange-500/30 hover:-translate-y-1">
-            Commit to Ledger
+            {editingTransaction ? "Update Ledger" : "Commit to Ledger"}
           </button>
         </form>
       </div>

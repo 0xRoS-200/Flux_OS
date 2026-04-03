@@ -4,6 +4,7 @@ import { useStore } from "../store/useStore";
 
 export default function InsightsPanel() {
   const transactions = useStore((state) => state.transactions);
+  const setActiveTab = useStore((state) => state.setActiveTab);
 
   const insight = useMemo(() => {
     const expenses = transactions.filter(t => t.type === 'expense');
@@ -54,7 +55,7 @@ export default function InsightsPanel() {
         )}
       </div>
 
-      <button className="text-xs font-semibold bg-white/10 hover:bg-white/20 transition-colors px-3 py-1.5 rounded-lg border border-white/20 self-start">
+      <button onClick={() => setActiveTab("Analytics")} className="text-xs font-semibold bg-white/10 hover:bg-white/20 transition-colors px-3 py-1.5 rounded-lg border border-white/20 self-start">
         View Full Analysis
       </button>
     </div>
