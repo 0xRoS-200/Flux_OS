@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Search, Download, Trash2, Upload } from "lucide-react";
+import { Search, Download, Trash2, Upload, Pencil } from "lucide-react";
 import { useStore } from "../store/useStore";
 
 export default function TransactionsTable() {
-  const { transactions, role, deleteTransaction, importTransactions } = useStore();
+  const { transactions, role, deleteTransaction, importTransactions, triggerAdminRequest } = useStore();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("all");
 
@@ -86,7 +86,7 @@ export default function TransactionsTable() {
               <th className="px-4 sm:px-8 py-3 sm:py-5">Timeline</th>
               <th className="hidden xs:table-cell px-4 sm:px-8 py-3 sm:py-5">Verification</th>
               <th className="px-4 sm:px-8 py-3 sm:py-5 text-right">Magnitude</th>
-              {role === 'admin' && <th className="px-4 sm:px-8 py-3 sm:py-5 text-right">Actions</th>}
+              <th className="px-4 sm:px-8 py-3 sm:py-5 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-stone-50 dark:divide-stone-800/30">
@@ -116,13 +116,16 @@ export default function TransactionsTable() {
                     {tx.amount > 0 ? '+' : ''}
                     {Math.abs(tx.amount).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
                   </td>
-                  {role === 'admin' && (
-                    <td className="px-8 py-5 text-right">
-                      <button onClick={() => deleteTransaction(tx.id)} className="text-stone-300 hover:text-red-500 transition-all p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20">
-                        <Trash2 className="h-4 w-4 ml-auto" />
+                  <td className="px-8 py-5 text-right">
+                    <div className="flex justify-end gap-1">
+                      <button onClick={() => role === 'admin' ? null : triggerAdminRequest()} className={`transition-all p-2 rounded-lg ${role === 'admin' ? 'text-stone-300 hover:text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20' : 'text-stone-300/50 cursor-pointer'}`}>
+                        <Pencil className="h-4 w-4" />
                       </button>
-                    </td>
-                  )}
+                      <button onClick={() => role === 'admin' ? deleteTransaction(tx.id) : triggerAdminRequest()} className={`transition-all p-2 rounded-lg ${role === 'admin' ? 'text-stone-300 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20' : 'text-stone-300/50 cursor-pointer'}`}>
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))
             )}

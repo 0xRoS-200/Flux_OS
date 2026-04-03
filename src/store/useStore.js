@@ -24,6 +24,12 @@ export const useStore = create(
       toggleRole: () => set((state) => ({ role: state.role === "user" ? "admin" : "user" })),
       toggleTheme: () => set((state) => ({ theme: state.theme === "light" ? "dark" : "light" })),
       
+      needAdminAction: false,
+      triggerAdminRequest: () => {
+        set({ needAdminAction: true });
+        setTimeout(() => set({ needAdminAction: false }), 2000);
+      },
+      
       transactions: initialTransactions,
       isLoading: false,
       
@@ -34,6 +40,9 @@ export const useStore = create(
       },
       addTransaction: (newTx) => set((state) => ({
         transactions: [{ ...newTx, id: Date.now() }, ...state.transactions]
+      })),
+      updateTransaction: (updatedTx) => set((state) => ({
+        transactions: state.transactions.map(tx => tx.id === updatedTx.id ? updatedTx : tx)
       })),
       deleteTransaction: (id) => set((state) => ({
         transactions: state.transactions.filter(tx => tx.id !== id)

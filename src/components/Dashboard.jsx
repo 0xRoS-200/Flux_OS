@@ -11,7 +11,7 @@ import TransactionsTable from "./TransactionsTable";
 import TransactionModal from "./TransactionModal";
 
 export default function Dashboard() {
-  const { role, theme, toggleTheme, fetchTransactions, isLoading, activeTab } = useStore();
+  const { role, theme, toggleTheme, fetchTransactions, isLoading, activeTab, triggerAdminRequest } = useStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
 
@@ -67,15 +67,13 @@ export default function Dashboard() {
                 {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               </button>
 
-              {role === 'admin' && (
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  className="flex flex-1 sm:flex-none justify-center items-center gap-2 bg-slate-900 dark:bg-orange-600 text-white px-5 py-2.5 rounded-xl hover:shadow-lg transition-all shadow-sm font-bold text-sm tracking-tight"
-                >
-                  <Plus className="h-4 w-4" />
-                  New Entry
-                </button>
-              )}
+              <button
+                onClick={() => role === 'admin' ? setIsModalOpen(true) : triggerAdminRequest()}
+                className={`flex flex-1 sm:flex-none justify-center items-center gap-2 px-5 py-2.5 rounded-xl transition-all shadow-sm font-bold text-sm tracking-tight ${role === 'admin' ? 'bg-slate-900 dark:bg-orange-600 text-white hover:shadow-lg' : 'bg-slate-900/50 dark:bg-orange-600/50 text-white/50 cursor-pointer'}`}
+              >
+                <Plus className="h-4 w-4" />
+                New Entry
+              </button>
             </div>
           </div>
 

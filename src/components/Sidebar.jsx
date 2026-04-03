@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import logo from "../assets/zoro.png";
 import {
   LayoutDashboard, Search, HandCoins, ArrowRightLeft,
@@ -13,7 +13,8 @@ const menuItems = [
 ];
 
 export default function Sidebar() {
-  const { userProfile, activeTab, setActiveTab, isExpanded, toggleSidebar, role, toggleRole } = useStore();
+  const { userProfile, activeTab, setActiveTab, isExpanded, toggleSidebar, role, toggleRole, needAdminAction } = useStore();
+  const [searchTerm, setSearchTerm] = useState("");
 
   const getInitials = (name) => {
     if (!name) return "U";
@@ -73,6 +74,8 @@ export default function Sidebar() {
           <input
             type="text"
             placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="focus:outline-none w-full bg-transparent text-stone-600 dark:text-stone-300 text-sm font-medium"
             tabIndex={isExpanded ? 0 : -1}
           />
@@ -80,7 +83,7 @@ export default function Sidebar() {
       </div>
 
       <div id="sideBtns" className={`flex flex-col gap-2 w-full px-4 py-2 ${isExpanded ? "mt-4" : "mt-6"} transition-all duration-300`}>
-        {menuItems.map((item, index) => {
+        {menuItems.filter(item => item.label.toLowerCase().includes(searchTerm.toLowerCase())).map((item, index) => {
           const Icon = item.Icon;
           const isActive = activeTab === item.label;
 
@@ -105,11 +108,18 @@ export default function Sidebar() {
       </div>
 
       <div className={`mt-auto w-full transition-all duration-300 pb-4 flex flex-col gap-2 ${isExpanded ? "px-4" : "px-3"}`}>
-        <button
-          onClick={toggleRole}
-          title={`Switch to ${role === 'user' ? 'Admin' : 'User'} View`}
-          className={`group w-full bg-white dark:bg-stone-800 rounded-xl shadow-sm border border-stone-200 dark:border-stone-700 flex items-center transition-all duration-300 hover:bg-stone-50 dark:hover:bg-stone-700 hover:border-orange-200 dark:hover:border-stone-600 relative overflow-hidden ${isExpanded ? "p-3 gap-2" : "p-2 justify-center"}`}
-        >
+        <div className="relative group w-full">
+          {needAdminAction && (
+            <div className={`absolute z-50 bg-red-500 text-white text-[11px] sm:text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg whitespace-nowrap animate-[bounce_1s_infinite] ${isExpanded ? "-top-12 left-1/2 -translate-x-1/2" : "top-1/2 -translate-y-1/2 left-[100%] ml-4"}`}>
+              Switch to Admin for changes
+              <div className={`absolute border-[6px] border-transparent ${isExpanded ? "top-full left-1/2 -translate-x-1/2 border-t-red-500" : "right-full top-1/2 -translate-y-1/2 border-r-red-500"}`}></div>
+            </div>
+          )}
+          <button
+            onClick={toggleRole}
+            title={`Switch to ${role === 'user' ? 'Admin' : 'User'} View`}
+            className={`group w-full bg-white dark:bg-stone-800 rounded-xl shadow-sm border ${needAdminAction ? 'border-red-500 ring-2 ring-red-500' : 'border-stone-200 dark:border-stone-700 hover:border-orange-200 dark:hover:border-stone-600'} flex items-center transition-all duration-300 hover:bg-stone-50 dark:hover:bg-stone-700 relative overflow-hidden ${isExpanded ? "p-3 gap-2" : "p-2 justify-center"}`}
+          >
           <div className="relative shrink-0 flex items-center justify-center h-10 w-10 rounded-full bg-stone-200 dark:bg-stone-700 ring-1 ring-stone-200 dark:ring-stone-700 text-stone-600 dark:text-stone-300 font-bold overflow-hidden">
             {currentProfile.avatar ? (
               <img key={role} src={currentProfile.avatar} alt="Profile" className="h-full w-full object-cover" />
@@ -135,10 +145,11 @@ export default function Sidebar() {
 
           {isExpanded && (
             <div className="shrink-0 text-stone-400 dark:text-stone-500 opacity-0 group-hover:opacity-100 group-hover:text-orange-500 dark:group-hover:text-orange-400 transition-all duration-300">
-              <RefreshCw className="h-4 w-4" />
+              <RefreshCw className={`h-4 w-4 ${needAdminAction ? 'text-red-500 animate-spin' : ''}`} />
             </div>
           )}
-        </button>
+          </button>
+        </div>
 
         <button
           onClick={() => useStore.getState().clearProfile()}
