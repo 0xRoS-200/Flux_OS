@@ -15,6 +15,15 @@ A premium, modern, and offline-first personal finance dashboard built with React
 
 ---
 
+## 💡 Development Approach
+This dashboard was built with an emphasis on **speed, privacy, and architectural scalability**.
+
+- **Focus on Architecture:** Instead of building a complex backend stack, effort was intentionally directed toward creating a robust, zero-latency frontend state framework. Zustand was used with local persistence to handle data beautifully without API overhead.
+- **Rapid Prototyping:** Modern developer tooling and component-driven workflows were utilized to rapidly scaffold the Tailwind UI boilerplate. This accelerated the development cycle, allowing more focus to be placed on UX details, seamless transitions (GSAP/Dark Mode), and data handling logic (local CSV bridging). 
+- **Design Driven:** The UI actively avoids standard, generic templates in favor of a customized, premium "intelligence terminal" aesthetic designed to be highly responsive and intuitive.
+
+---
+
 ## 🚀 Installation & Setup
 
 ### Prerequisites
