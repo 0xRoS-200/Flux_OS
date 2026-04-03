@@ -31,7 +31,7 @@ export default function InsightsPanel() {
 
     return {
       category: highestCategory,
-      amount: highestAmount.toLocaleString('en-IN', { style: 'currency', currency: 'INR' }),
+      amount: new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', notation: 'compact', maximumFractionDigits: 2 }).format(highestAmount),
       percentage
     };
   }, [transactions]);

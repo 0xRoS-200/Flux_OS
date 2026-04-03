@@ -69,7 +69,7 @@ export default function DeepAnalytics() {
             <span className="text-xs font-bold text-stone-500 uppercase tracking-widest">Average Outflow</span>
           </div>
           <div className="text-2xl font-black text-stone-800 dark:text-stone-100 mb-1">
-            {stats.avgExpense.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
+            {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', notation: 'compact', maximumFractionDigits: 2 }).format(stats.avgExpense)}
           </div>
           <p className="text-[10px] text-stone-400">Typical transaction weight.</p>
         </div>
@@ -80,7 +80,7 @@ export default function DeepAnalytics() {
             <span className="text-xs font-bold text-orange-600 dark:text-orange-400 uppercase tracking-widest">Largest Debit</span>
           </div>
           <div className="text-2xl font-black text-orange-700 dark:text-orange-300 mb-1">
-            {stats.largestExpense ? Math.abs(stats.largestExpense.amount).toLocaleString('en-IN', { style: 'currency', currency: 'INR' }) : "N/A"}
+            {stats.largestExpense ? new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', notation: 'compact', maximumFractionDigits: 2 }).format(Math.abs(stats.largestExpense.amount)) : "N/A"}
           </div>
           <p className="text-[10px] text-orange-500/80 font-medium truncate">
             {stats.largestExpense ? `Flagged in ${stats.largestExpense.category}` : "Awaiting data"}

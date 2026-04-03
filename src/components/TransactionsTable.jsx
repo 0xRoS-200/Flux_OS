@@ -114,7 +114,7 @@ export default function TransactionsTable() {
                   </td>
                   <td className={`px-8 py-5 text-right font-bold whitespace-nowrap tabular-nums tracking-tighter text-base ${tx.amount > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-stone-900 dark:text-white'}`}>
                     {tx.amount > 0 ? '+' : ''}
-                    {Math.abs(tx.amount).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
+                    {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', notation: 'compact', maximumFractionDigits: 2 }).format(Math.abs(tx.amount))}
                   </td>
                   <td className="px-8 py-5 text-right">
                     <div className="flex justify-end gap-1">

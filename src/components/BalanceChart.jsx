@@ -10,7 +10,7 @@ const CustomTooltip = ({ active, payload, label }) => {
         <div className="flex items-center gap-2">
           <div className="h-2 w-2 rounded-full bg-blue-600"></div>
           <span className="text-zinc-900 dark:text-white font-bold text-sm">
-            {payload[0].value.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })} balance
+            {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', notation: 'compact', maximumFractionDigits: 2 }).format(payload[0].value)} balance
           </span>
         </div>
       </div>
@@ -89,7 +89,7 @@ export default function BalanceChart() {
               </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e4e4e7" strokeOpacity={0.4} />
               <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#71717a' }} dy={10} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#71717a' }} tickFormatter={(val) => `₹${val}`} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#71717a' }} tickFormatter={(val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', notation: 'compact', maximumFractionDigits: 0 }).format(val)} />
               <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#d4d4d8', strokeWidth: 1, strokeDasharray: '4 4' }} />
               <Area type="monotone" dataKey="balance" stroke="#2563eb" strokeWidth={3} fillOpacity={1} fill="url(#colorBalance)" />
             </AreaChart>

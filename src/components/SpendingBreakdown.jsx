@@ -46,7 +46,7 @@ export default function SpendingBreakdown() {
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value) => `₹${value.toLocaleString('en-IN')}`} />
+                <Tooltip formatter={(value) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', notation: 'compact', maximumFractionDigits: 2 }).format(value)} />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -59,7 +59,7 @@ export default function SpendingBreakdown() {
                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }}></div>
                     {item.name}
                   </span>
-                  <span className="text-zinc-900 dark:text-white">₹{item.value.toLocaleString('en-IN')}</span>
+                  <span className="text-zinc-900 dark:text-white">{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', notation: 'compact', maximumFractionDigits: 2 }).format(item.value)}</span>
                 </div>
                 <div className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-1.5 overflow-hidden">
                   <div className="h-1.5 rounded-full" style={{ width: `${(item.value / totalExpenses) * 100}%`, backgroundColor: item.color }}></div>

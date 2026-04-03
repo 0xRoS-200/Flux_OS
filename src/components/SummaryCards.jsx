@@ -14,7 +14,7 @@ export default function SummaryCards() {
 
   const totalBalance = totalIncome - totalExpense;
 
-  const formatINR = (amount) => amount.toLocaleString('en-IN', { style: 'currency', currency: 'INR' });
+  const formatINR = (amount) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', notation: 'compact', maximumFractionDigits: 2 }).format(amount);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6">
