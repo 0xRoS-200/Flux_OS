@@ -24,6 +24,12 @@ export const useStore = create(
       toggleRole: () => set((state) => ({ role: state.role === "user" ? "admin" : "user" })),
       toggleTheme: () => set((state) => ({ theme: state.theme === "light" ? "dark" : "light" })),
       
+      autoExportFrequency: "none",
+      lastExportDate: null,
+      setAutoExportFrequency: (freq) => set({ autoExportFrequency: freq }),
+      setLastExportDate: (date) => set({ lastExportDate: date }),
+
+      
       needAdminAction: false,
       triggerAdminRequest: () => {
         set({ needAdminAction: true });

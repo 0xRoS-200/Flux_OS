@@ -12,7 +12,7 @@ import TransactionsTable from "./TransactionsTable";
 import TransactionModal from "./TransactionModal";
 
 export default function Dashboard() {
-  const { role, theme, toggleTheme, fetchTransactions, isLoading, activeTab, triggerAdminRequest, editingTransaction, setEditingTransaction } = useStore();
+  const { role, theme, toggleTheme, fetchTransactions, isLoading, activeTab, triggerAdminRequest, editingTransaction, setEditingTransaction, transactions, autoExportFrequency, lastExportDate, setLastExportDate } = useStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
 
@@ -27,6 +27,41 @@ export default function Dashboard() {
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
   }, [fetchTransactions]);
+
+  // Auto-export logic
+  useEffect(() => {
+    if (autoExportFrequency === "none" || transactions.length === 0) return;
+
+    const now = Date.now();
+    const lastExport = lastExportDate || 0;
+    const oneDay = 24 * 60 * 60 * 1000;
+    const oneWeek = 7 * oneDay;
+
+    let shouldExport = false;
+    if (autoExportFrequency === "daily" && (now - lastExport) >= oneDay) {
+      shouldExport = true;
+    } else if (autoExportFrequency === "weekly" && (now - lastExport) >= oneWeek) {
+      shouldExport = true;
+    }
+
+    if (shouldExport) {
+      const headers = ["ID,Date,Category,Type,Status,Amount\n"];
+      const csvData = transactions.map(t =>
+        `${t.id},${t.date},${t.category},${t.type},${t.status},${t.amount}`
+      ).join("\n");
+
+      const blob = new Blob([headers + csvData], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `transactions_auto_${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      setLastExportDate(now);
+    }
+  }, [autoExportFrequency, lastExportDate, transactions, setLastExportDate]);
 
   const handleInstall = async () => {
     if (!deferredPrompt) return;

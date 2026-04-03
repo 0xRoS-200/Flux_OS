@@ -3,7 +3,7 @@ import { Search, Download, Trash2, Upload, Pencil } from "lucide-react";
 import { useStore } from "../store/useStore";
 
 export default function TransactionsTable() {
-  const { transactions, role, deleteTransaction, importTransactions, triggerAdminRequest, setEditingTransaction } = useStore();
+  const { transactions, role, deleteTransaction, importTransactions, triggerAdminRequest, setEditingTransaction, autoExportFrequency, setAutoExportFrequency } = useStore();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("all");
 
@@ -58,6 +58,17 @@ export default function TransactionsTable() {
           </select>
 
           <div className="flex gap-2 ml-auto sm:ml-0">
+            <select
+              value={autoExportFrequency}
+              onChange={(e) => setAutoExportFrequency(e.target.value)}
+              className="p-2 sm:p-3 bg-white/60 dark:bg-stone-800/60 dark:text-stone-100 border border-white dark:border-stone-700/50 rounded-xl text-xs sm:text-sm outline-none cursor-pointer focus:border-orange-400 transition-all font-medium shadow-sm"
+              title="Auto-Export Frequency"
+            >
+              <option value="none">No Auto-Export</option>
+              <option value="daily">Daily Auto-Export</option>
+              <option value="weekly">Weekly Auto-Export</option>
+            </select>
+
             <label title="Restore from CSV" className="p-2 sm:p-3 bg-white/60 dark:bg-stone-800/60 border border-white dark:border-stone-700/50 rounded-xl text-stone-400 dark:text-stone-500 hover:text-orange-500 hover:border-orange-400 transition-all cursor-pointer shadow-sm">
               <Upload className="h-4 w-4" />
               <input type="file" accept=".csv" className="hidden" onChange={(e) => {
@@ -71,7 +82,7 @@ export default function TransactionsTable() {
                 reader.readAsText(file);
               }} />
             </label>
-            <button onClick={exportToCSV} title="Export CSV" className="p-2 sm:p-3 bg-white/60 dark:bg-stone-800/60 border border-white dark:border-stone-700/50 rounded-xl text-stone-400 dark:text-stone-500 hover:text-orange-500 hover:border-orange-400 transition-all shadow-sm">
+            <button onClick={exportToCSV} title="Export CSV Now" className="p-2 sm:p-3 bg-white/60 dark:bg-stone-800/60 border border-white dark:border-stone-700/50 rounded-xl text-stone-400 dark:text-stone-500 hover:text-orange-500 hover:border-orange-400 transition-all shadow-sm">
               <Download className="h-4 w-4" />
             </button>
           </div>
