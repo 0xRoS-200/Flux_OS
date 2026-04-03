@@ -72,7 +72,6 @@ export default function TransactionModal({ isOpen, onClose }) {
     <div ref={overlayRef} className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/10 dark:bg-black/60 backdrop-blur-[12px]">
       <div ref={modalRef} className="bg-white/70 dark:bg-stone-900/80 border border-white dark:border-stone-800/50 backdrop-blur-[60px] rounded-[3rem] shadow-[0_30px_80px_rgba(249,115,22,0.1)] dark:shadow-[0_30px_80px_rgba(0,0,0,0.5)] w-full max-w-md p-10 overflow-hidden relative group">
         
-        {/* Aesthetic Edge Glow - Sunlight / Ember */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-orange-400/40 dark:via-orange-500/20 to-transparent" />
 
         <div className="flex justify-between items-center mb-10">

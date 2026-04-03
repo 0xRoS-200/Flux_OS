@@ -41,12 +41,11 @@ export default function LandingPage() {
 
   return (
     <div className="relative min-h-screen w-full flex flex-col items-center justify-center p-4 sm:p-6 bg-[#fdfcfd] dark:bg-[#0e0c08] selection:bg-sky-500/20">
-      
-      {/* Subtle Static Background Gradient */}
+
       <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/5 via-transparent to-sky-500/5 pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-lg flex flex-col gap-6 sm:gap-8 items-center">
-        {/* Brand Title */}
+
         <div className="text-center">
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tighter text-stone-900 dark:text-stone-100 flex items-center gap-3">
             <div className="bg-orange-600 rounded-xl p-2 shrink-0 shadow-sm flex items-center justify-center">
@@ -56,12 +55,10 @@ export default function LandingPage() {
           </h1>
         </div>
 
-        {/* Main Sign In Card */}
         <div className="w-full p-6 sm:p-10 md:p-12 rounded-2xl bg-white/70 dark:bg-stone-950/80 border border-white dark:border-stone-800/20 backdrop-blur-[120px] shadow-[0_40px_100px_rgba(0,0,0,0.12)] dark:shadow-[0_40px_100px_rgba(0,0,0,0.6)] overflow-hidden transition-all relative ring-1 ring-black/5">
-          
-          {/* Accent Line */}
+
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-orange-500 to-transparent opacity-80" />
-          
+
           <header className="mb-8 sm:mb-12 text-center text-balance overflow-hidden">
             <h2 className="text-3xl sm:text-4xl font-bold text-stone-900 dark:text-stone-100 mb-2 tracking-tighter">Sign In</h2>
             <p className="text-stone-400 dark:text-stone-500 text-[10px] sm:text-xs font-bold uppercase tracking-[0.3em]">Access local intelligence</p>
@@ -101,11 +98,11 @@ export default function LandingPage() {
               </button>
             ) : (
               <div className="flex justify-center border-t border-stone-100 dark:border-stone-800/50 pt-4 sm:pt-6 mt-2">
-                 <label className="cursor-pointer flex items-center gap-2 group">
-                    <Download className="w-3.5 h-3.5 text-stone-400 group-hover:text-orange-500 transition-colors" />
-                    <span className="text-[10px] font-bold text-stone-400 group-hover:text-stone-600 dark:group-hover:text-stone-300 uppercase tracking-widest transition-colors">Restore from CSV</span>
-                    <input type="file" accept=".csv" className="hidden" onChange={handleFileUpload} />
-                  </label>
+                <label className="cursor-pointer flex items-center gap-2 group">
+                  <Download className="w-3.5 h-3.5 text-stone-400 group-hover:text-orange-500 transition-colors" />
+                  <span className="text-[10px] font-bold text-stone-400 group-hover:text-stone-600 dark:group-hover:text-stone-300 uppercase tracking-widest transition-colors">Restore from CSV</span>
+                  <input type="file" accept=".csv" className="hidden" onChange={handleFileUpload} />
+                </label>
               </div>
             )}
           </form>

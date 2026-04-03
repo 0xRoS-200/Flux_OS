@@ -11,7 +11,6 @@ export default function InsightsPanel() {
     if (expenses.length === 0) return null;
 
     const categoryTotals = expenses.reduce((acc, tx) => {
-      // Grouping expenses strictly by category string ignoring cases
       const cat = tx.category.trim();
       acc[cat] = (acc[cat] || 0) + Math.abs(tx.amount);
       return acc;

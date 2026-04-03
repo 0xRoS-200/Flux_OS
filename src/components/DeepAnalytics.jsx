@@ -13,8 +13,7 @@ export default function DeepAnalytics() {
 
     const totalExpenseAmount = expenses.reduce((sum, t) => sum + Math.abs(t.amount), 0);
     const avgExpense = expenses.length > 0 ? totalExpenseAmount / expenses.length : 0;
-    
-    // Largest single expense
+
     let largestExpense = null;
     if (expenses.length > 0) {
       largestExpense = expenses.reduce((prev, curr) => (Math.abs(curr.amount) > Math.abs(prev.amount)) ? curr : prev);
@@ -34,8 +33,6 @@ export default function DeepAnalytics() {
          mostFrequentCat = cat;
       }
     }
-
-    // Average Income vs Average Expense
     const avgIncome = incomes.length > 0 ? incomes.reduce((sum, t) => sum + t.amount, 0) / incomes.length : 0;
     const burnRateRatio = avgIncome > 0 ? (avgExpense / avgIncome) * 100 : 0;
 
